@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign-Up Page</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #000;
+      overflow: hidden;
+    }
+
+    section {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2px;
+      flex-wrap: wrap;
+      overflow: hidden;
+    }
+
+    section span {
+      width: calc(6.25vw - 2px);
+      height: calc(6.25vw - 2px);
+      background: #181818;
+      z-index: 2;
+      transition: 1.5s;
+    }
+
+    section span:hover { background: #e95f30; transition: 0s; }
+
+    section::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(#000,#e95f30,#000);
+      animation: animate 5s linear infinite;
+    }
+
+    @keyframes animate { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
+    .card {
+      position: absolute;
+      width: 400px;
+      background: #222;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      border-radius: 4px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .card .content {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .card h2 { font-size: 2em; color: #e95f30; text-transform: uppercase; cursor: default; }
+
+    .form { width: 100%; display: flex; flex-direction: column; gap: 25px; }
+
+    .inputBx { position: relative; width: 100%; }
+    .inputBx input {
+      width: 100%;
+      background: #333;
+      border: none;
+      outline: none;
+      padding: 25px 10px 7.5px;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 500;
+      font-size: 1em;
+    }
+    .inputBx i {
+      position: absolute;
+      left: 0;
+      padding: 15px 10px;
+      font-style: normal;
+      color: #aaa;
+      transition: 0.5s;
+      pointer-events: none;
+    }
+    .inputBx input:focus ~ i,
+    .inputBx input:valid ~ i { transform: translateY(-7.5px); font-size: 0.8em; color: #fff; }
+
+    .links { display: flex; justify-content: flex-end; }
+    .links a { color: #e95f30; text-decoration: none; font-weight: 600; cursor: pointer; }
+
+    input[type="submit"] {
+      padding: 10px;
+      background: #e95f30;
+      color: #111;
+      font-weight: 600;
+      font-size: 1.25em;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      border-radius: 4px;
+      border: none;
+    }
+
+    .error { color: #ff4d4d; font-size: 0.9em; text-align: center; }
+
+    @media (max-width: 900px) {
+      section span { width: calc(10vw - 2px); height: calc(10vw - 2px); }
+      .card { width: 90%; padding: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <script>
+      for(let i=0; i<120; i++){
+        document.write('<span></span>');
+      }
+    </script>
+
+    <div class="card">
+      <div class="content">
+        <h2>Sign Up</h2>
+        <form class="form" id="signupForm">
+          <div class="inputBx">
+            <input type="text" name="fullname" required />
+            <i>Full Name</i>
+          </div>
+          <div class="inputBx">
+            <input type="email" name="email" required />
+            <i>Email</i>
+          </div>
+          <div class="inputBx">
+            <input type="text" name="username" required />
+            <i>Username</i>
+          </div>
+          <div class="inputBx">
+            <input type="password" name="password" required />
+            <i>Password</i>
+          </div>
+          <div class="inputBx">
+            <input type="password" name="confirm_password" required />
+            <i>Confirm Password</i>
+          </div>
+          <div class="links">
+            <a href="#">Already have an account?</a>
+          </div>
+          <div class="inputBx">
+            <input type="submit" value="Register" />
+          </div>
+          <p class="error" id="errorMsg"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const fullname = form.fullname.value.trim();
+      const email = form.email.value.trim();
+      const username = form.username.value.trim();
+      const password = form.password.value;
+      const confirmPassword = form.confirm_password.value;
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+      if(!fullname || !email || !username || !password || !confirmPassword){
+        errorMsg.textContent = 'Please fill in all required fields.';
+        return;
+      }
+      if(!emailPattern.test(email)){
+        errorMsg.textContent = 'Please enter a valid email.';
+        return;
+      }
+      if(password.length < 6){
+        errorMsg.textContent = 'Password must be at least 6 characters.';
+        return;
+      }
+      if(password !== confirmPassword){
+        errorMsg.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      // Clear error message and redirect
+      errorMsg.textContent = '';
+      window.location.href = 'home.html';
+    });
+  </script>
+</body>
+</html>
